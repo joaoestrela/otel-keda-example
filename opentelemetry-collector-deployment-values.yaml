@@ -1,0 +1,24 @@
+---
+# https://opentelemetry.io/docs/kubernetes/getting-started/#deployment-collector
+mode: deployment
+
+image:
+  repository: otel/opentelemetry-collector-k8s
+
+replicaCount: 1
+
+presets:
+  clusterMetrics:
+    enabled: true
+  kubernetesEvents:
+    enabled: true
+
+config:
+  exporters:
+    otlphttp/mimir:
+      endpoint: http://mimir-distributor.mimir:8080/otlp
+
+  service:
+    pipelines:
+      metrics:
+        exporters: [ otlphttp/mimir ]

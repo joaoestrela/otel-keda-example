@@ -1,0 +1,19 @@
+assertNoLeakedSecrets: false
+
+datasources:
+  prometheus.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Mimir
+        uid: mimir
+        access: proxy
+        editable: false
+        isDefault: false
+        jsonData:
+          manageAlerts: false
+          prometheusType: Mimir
+          prometheusVersion: 2.4.0
+        orgId: 1
+        type: prometheus
+        url: http://mimir-nginx.mimir/prometheus
+        version: 1

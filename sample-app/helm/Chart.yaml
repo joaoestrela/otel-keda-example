@@ -1,0 +1,9 @@
+apiVersion: v2
+name: otel-keda-example
+description: A Helm chart for oteol-keda-example application
+type: application
+version: 0.1.1
+maintainers:
+  - name: joaoestrela
+    email: jestrela.galaxy@gmail.com
+    url: https://github.com/joaoestrela

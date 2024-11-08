@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "otel-keda-example.fullname" . }}-test-connection"
+  labels:
+    {{- include "otel-keda-example.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: fullstorydev/grpcurl
+      args: ['-plaintext', '{{ include "otel-keda-example.fullname" . }}:{{ .Values.service.port }}', 'describe', 'counter.CounterService']
+  restartPolicy: Never

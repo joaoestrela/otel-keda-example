@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "generated/counter/pb";
+
+package counter;
+
+service CounterService {
+  rpc IncreaseCounter(CounterRequest) returns (CounterResponse) {}
+  rpc DecreaseCounter(CounterRequest) returns (CounterResponse) {}
+}
+
+message CounterRequest {
+  int32 value = 1;
+}
+
+message CounterResponse {
+  int32 result = 1;
+}
