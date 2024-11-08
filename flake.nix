@@ -33,7 +33,7 @@
             kustomize
             nixd
             nixfmt-rfc-style
-            protobuf_26
+            protobuf_24
             protoc-gen-go
             protoc-gen-go-grpc
             grpcurl
