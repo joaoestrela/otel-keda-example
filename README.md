@@ -70,10 +70,11 @@ grpcurl -plaintext -d '{"value": 3}' localhost:50051 counter.CounterService/Decr
 
 ## Project Structure
 
-- [`grafana/values.yaml`](grafana/values.yaml): Configuration for Grafana.
-- [`keda/values.yaml`](keda/values.yaml): Configuration for KEDA.
-- [`mimir/values.yaml`](mimir/values.yaml): Configuration for Mimir.
-- [`opentelemetry-collector/`](opentelemetry-collector/): Configuration for OpenTelemetry Collector.
+- [`grafana-values.yaml`](grafana-values.yaml): Configuration for Grafana.
+- [`keda-values.yaml`](keda-values.yaml): Configuration for KEDA.
+- [`mimir-values.yaml`](mimir-values.yaml): Configuration for Mimir.
+- [`opentelemetry-collector-daemonset-values.yaml`](opentelemetry-collector-daemonset-values.yaml): Configuration for OpenTelemetry Collector DaemonSet.
+- [`opentelemetry-collector-deployment-values.yaml`](opentelemetry-collector-deployment-values.yaml): Configuration for OpenTelemetry Collector Deployment.
 - [`sample-app/`](sample-app/): Sample application.
 - [`sample-app/helm/`](sample-app/helm/): Helm chart for deploying the sample application.
 

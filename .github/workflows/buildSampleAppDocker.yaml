@@ -5,6 +5,11 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "sample-app/**"
+      - ".github/workflows/buildSampleAppDocker.yaml"
+    paths-ignore:
+      - "sample-app/helm/**"
 
 permissions:
   checks: read
