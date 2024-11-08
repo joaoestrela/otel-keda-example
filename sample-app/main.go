@@ -38,7 +38,7 @@ func (s *server) DecreaseCounter(ctx context.Context, req *pb.CounterRequest) (*
 }
 
 func main() {
-	port := flag.String("port", ":50051", "The server port")
+	addr := flag.String("server-addr", ":8080", "The server addr")
 	flag.Parse()
 
 	otelResource, err := iniOtelResource()
@@ -68,7 +68,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	lis, err := net.Listen("tcp", *port)
+	lis, err := net.Listen("tcp", *addr)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
@@ -82,7 +82,7 @@ func main() {
 	pb.RegisterCounterServiceServer(s, &server{counterMetric: counterMetric})
 	reflection.Register(s)
 
-	log.Printf("Server is running on %s", *port)
+	log.Printf("Server is running on %s", *addr)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)
 	}
