@@ -15,7 +15,6 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	"go.opentelemetry.io/contrib/instrumentation/runtime"
-	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
 )
 
@@ -27,13 +26,13 @@ type server struct {
 
 func (s *server) IncreaseCounter(ctx context.Context, req *pb.CounterRequest) (*pb.CounterResponse, error) {
 	s.counter += req.Value
-	s.counterMetric.Add(ctx, int64(req.Value), metric.WithAttributes(attribute.String("operation", "increase")))
+	s.counterMetric.Add(ctx, int64(req.Value))
 	return &pb.CounterResponse{Result: s.counter}, nil
 }
 
 func (s *server) DecreaseCounter(ctx context.Context, req *pb.CounterRequest) (*pb.CounterResponse, error) {
 	s.counter -= req.Value
-	s.counterMetric.Add(ctx, int64(-req.Value), metric.WithAttributes(attribute.String("operation", "decrease")))
+	s.counterMetric.Add(ctx, int64(-req.Value))
 	return &pb.CounterResponse{Result: s.counter}, nil
 }
 
@@ -63,7 +62,7 @@ func main() {
 
 	meter := provider.Meter("counter-server")
 
-	counterMetric, err := meter.Int64UpDownCounter("counter", metric.WithDescription("A counter that can go up and down"))
+	counterMetric, err := meter.Int64UpDownCounter("sample-counter", metric.WithDescription("A sample counter that can go up and down"))
 	if err != nil {
 		log.Fatal(err)
 	}
