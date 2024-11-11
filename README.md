@@ -86,18 +86,20 @@ kubectl --namespace sample-app get pods -o jsonpath="{.items[$POD_N].metadata.na
 ```
 
 ### Interact with the Sample Application
-
+To trigger an autoscaling above 1 pod, make sure the counter average is above what is set in [`sampleAppScaledObject.yaml`](sampleAppScaledObject.yaml). If you have not changed anything, it should be 10.
 ```sh
 POD_N=0
 grpcurl -plaintext -d '{"value": 5}' localhost:$((8080 + POD_N)) counter.CounterService/IncreaseCounter
 grpcurl -plaintext -d '{"value": 3}' localhost:$((8080 + POD_N)) counter.CounterService/DecreaseCounter
 ```
-
-### Count Sample Application Pods
+Afterwards you can check the pod count
 
 ```sh
 kubectl get pods --namespace sample-app --no-headers | wc -l
 ```
+
+> [!NOTE]
+> For simplicity's sake, the configured metric is just a basic average at a point in time. It can be changed to any valid Prometheus query.
 
 ## Project Structure
 
