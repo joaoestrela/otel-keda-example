@@ -1,0 +1,3 @@
+mimir:
+  structuredConfig:
+    multitenancy_enabled: false

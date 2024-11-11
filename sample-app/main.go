@@ -40,13 +40,13 @@ func (s *server) DecreaseCounter(ctx context.Context, req *pb.CounterRequest) (*
 func main() {
 	addr := flag.String("server-addr", ":8080", "The server addr")
 	flag.Parse()
-
+	ctx := context.Background()
 	otelResource, err := iniOtelResource()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	provider, err := initMeter(otelResource)
+	provider, err := initMeter(otelResource, ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
