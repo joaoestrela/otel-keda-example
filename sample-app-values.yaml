@@ -1,0 +1,7 @@
+extraEnvs:
+  - name: NODE_IP
+    valueFrom:
+      fieldRef:
+        fieldPath: status.hostIP
+  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+    value: http://$(NODE_IP):4317

@@ -70,11 +70,11 @@ resources: {}
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
-    grpc:
-      port: 8080
+  grpc:
+    port: 8080
 readinessProbe:
-    grpc:
-      port: 8080
+  grpc:
+    port: 8080
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
@@ -102,3 +102,9 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Extra environment variables for the podinfo container
+extraEnvs: []
+# Example on how to configure extraEnvs
+#  - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+#    value: "http://otel:4317"

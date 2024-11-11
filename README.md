@@ -39,7 +39,7 @@ helm repo update
 kind create cluster --config=kind.yaml --name otel-keda-example
 ```
 
-### Install Helm Charts
+### Install supporting Helm Charts
 
 ```sh
 helm upgrade grafana grafana/grafana --namespace grafana --create-namespace --install --values grafana-values.yaml
@@ -47,6 +47,11 @@ helm upgrade mimir grafana/mimir-distributed --namespace mimir --create-namespac
 helm upgrade keda kedacore/keda --namespace keda --create-namespace --install --values keda-values.yaml
 helm upgrade opentelemetry-collector-daemonset open-telemetry/opentelemetry-collector --namespace opentelemetry-collector --create-namespace --install --values opentelemetry-collector-daemonset-values.yaml
 helm upgrade opentelemetry-collector-deployment open-telemetry/opentelemetry-collector --namespace opentelemetry-collector --create-namespace --install --values opentelemetry-collector-deployment-values.yaml
+```
+
+### Install sampple-app from local repository Helm Charts
+```sh
+helm upgrade sample-app sample-app/helm --namespace sample-app --create-namespace --install --values sample-app-values.yaml
 ```
 
 ### Retrieve Grafana Admin Password
@@ -58,14 +63,14 @@ kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-passwor
 ### Port Forward Sample Application Service
 
 ```sh
-kubectl --namespace otel-keda-example port-forward service/otel-keda-example 50051:50051
+kubectl --namespace otel-keda-example port-forward service/otel-keda-example 8080:8080
 ```
 
 ### Interact with the Sample Application
 
 ```sh
-grpcurl -plaintext -d '{"value": 5}' localhost:50051 counter.CounterService/IncreaseCounter
-grpcurl -plaintext -d '{"value": 3}' localhost:50051 counter.CounterService/DecreaseCounter
+grpcurl -plaintext -d '{"value": 5}' localhost:8080 counter.CounterService/IncreaseCounter
+grpcurl -plaintext -d '{"value": 3}' localhost:8080 counter.CounterService/DecreaseCounter
 ```
 
 ## Project Structure
