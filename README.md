@@ -49,7 +49,7 @@ helm upgrade opentelemetry-collector-daemonset open-telemetry/opentelemetry-coll
 helm upgrade opentelemetry-collector-deployment open-telemetry/opentelemetry-collector --namespace opentelemetry-collector --create-namespace --install --values opentelemetry-collector-deployment-values.yaml
 ```
 
-### Install sampple-app Helm Chart
+### Install sample-app Helm Chart
 
 From local repository
 ```sh
@@ -63,7 +63,7 @@ helm upgrade sample-app oci://ghcr.io/joaoestrela/otel-keda-example/helm-charts/
 
 ### Create Keda Scaled Object
 ```sh
-kubectl apply -f sampleAppScaledObject
+kubectl apply -f sampleAppScaledObject.yaml
 ```
 
 ### Retrieve Grafana Admin Password
@@ -72,17 +72,31 @@ kubectl apply -f sampleAppScaledObject
 kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
 
-### Port Forward Sample Application Service
+### Port Forward Grafana
 
 ```sh
-kubectl --namespace otel-keda-example port-forward service/otel-keda-example 8080:8080
+kubectl --namespace grafana port-forward svc/grafana 3000:9090
+```
+
+### Port Forward Sample Application Pods
+
+```sh
+POD_N=0
+kubectl --namespace sample-app get pods -o jsonpath="{.items[$POD_N].metadata.name}" | xargs -I {} kubectl --namespace sample-app port-forward {} $((8080 + POD_N)):8080
 ```
 
 ### Interact with the Sample Application
 
 ```sh
-grpcurl -plaintext -d '{"value": 5}' localhost:8080 counter.CounterService/IncreaseCounter
-grpcurl -plaintext -d '{"value": 3}' localhost:8080 counter.CounterService/DecreaseCounter
+POD_N=0
+grpcurl -plaintext -d '{"value": 5}' localhost:$((8080 + POD_N)) counter.CounterService/IncreaseCounter
+grpcurl -plaintext -d '{"value": 3}' localhost:$((8080 + POD_N)) counter.CounterService/DecreaseCounter
+```
+
+### Count Sample Application Pods
+
+```sh
+kubectl get pods --namespace sample-app --no-headers | wc -l
 ```
 
 ## Project Structure
@@ -94,4 +108,5 @@ grpcurl -plaintext -d '{"value": 3}' localhost:8080 counter.CounterService/Decre
 - [`opentelemetry-collector-deployment-values.yaml`](opentelemetry-collector-deployment-values.yaml): Configuration for OpenTelemetry Collector Deployment.
 - [`sample-app/`](sample-app/): Sample application.
 - [`sample-app/helm/`](sample-app/helm/): Helm chart for deploying the sample application.
+- [`sample-app-values.yaml`](sample-app-values.yaml): Configuration for the sample application.
 
