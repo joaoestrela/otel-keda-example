@@ -49,9 +49,21 @@ helm upgrade opentelemetry-collector-daemonset open-telemetry/opentelemetry-coll
 helm upgrade opentelemetry-collector-deployment open-telemetry/opentelemetry-collector --namespace opentelemetry-collector --create-namespace --install --values opentelemetry-collector-deployment-values.yaml
 ```
 
-### Install sampple-app from local repository Helm Charts
+### Install sampple-app Helm Chart
+
+From local repository
 ```sh
 helm upgrade sample-app sample-app/helm --namespace sample-app --create-namespace --install --values sample-app-values.yaml
+```
+
+From GHCR
+```sh
+helm upgrade sample-app oci://ghcr.io/joaoestrela/otel-keda-example/helm-charts/sample-app --version 0.1.1 --namespace sample-app --create-namespace --install --values sample-app-values.yaml
+```
+
+### Create Keda Scaled Object
+```sh
+kubectl apply -f sampleAppScaledObject
 ```
 
 ### Retrieve Grafana Admin Password

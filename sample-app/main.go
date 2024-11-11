@@ -15,6 +15,7 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	"go.opentelemetry.io/contrib/instrumentation/runtime"
+	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/metric"
 )
 
@@ -45,7 +46,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	provider, err := initMeter(otelResource, ctx)
+	provider, err := initMeterProvider(otelResource, ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -60,12 +61,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	meter := provider.Meter("counter-server")
+	meter := otel.Meter("counter-server")
 
-	counterMetric, err := meter.Int64UpDownCounter("sample-counter", metric.WithDescription("A sample counter that can go up and down"))
+	counterMetric, err := meter.Int64UpDownCounter("sample-counter", metric.WithDescription("A sample counter that can go up and down"), metric.WithUnit("1"))
 	if err != nil {
 		log.Fatal(err)
 	}
+	counterMetric.Add(ctx, 0)
 
 	lis, err := net.Listen("tcp", *addr)
 	if err != nil {

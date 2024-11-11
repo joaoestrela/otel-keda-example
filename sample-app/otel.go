@@ -35,7 +35,7 @@ func iniOtelResource() (*resource.Resource, error) {
 	return res, nil
 }
 
-func initMeter(resource *resource.Resource, ctx context.Context) (*sdkmetric.MeterProvider, error) {
+func initMeterProvider(resource *resource.Resource, ctx context.Context) (*sdkmetric.MeterProvider, error) {
 	stdOutExporter, err := stdoutmetric.New()
 	if err != nil {
 		return nil, err

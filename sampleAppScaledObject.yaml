@@ -1,0 +1,17 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: sample-app
+  namespace: sample-app
+spec:
+  scaleTargetRef:
+    name: sample-app
+  maxReplicaCount: 5
+  minReplicaCount: 1
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: http://mimir-nginx.mimir/prometheus
+      metricName: sample_counter
+      threshold: '10'
+      query: avg(sample_counter)
